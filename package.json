@@ -1,0 +1,46 @@
+{
+  "name": "dsh-composer-glass",
+  "description": "底栏改造：输入框落在 +/- 发送之间，权限与模型移到上方灰字行，附件与多行态切圆角矩形，输入区渐变放大。",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "id": "dsh-composer-glass",
+    "name": "底栏药丸",
+    "version": "1.0.0",
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": []
+    }
+  },
+  "files": [
+    "lib",
+    "client.js",
+    "cordis.patch.yml"
+  ],
+  "license": "MIT",
+  "private": false,
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "dsh-plugin",
+    "composer",
+    "ui"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adeahejshshsh/dsh-composer-glass.git"
+  },
+  "homepage": "https://github.com/adeahejshshsh/dsh-composer-glass#readme",
+  "author": "adeahejshshsh"
+}
