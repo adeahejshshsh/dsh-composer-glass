@@ -42,17 +42,17 @@ DSH（DeepSeek Harness）外置插件：改造会话页底栏（composer）与**
 插件是**外置**的，不改动上游包。把它放进 DSH 的 incoming 目录并登记到 profile：
 
 ```bash
-# 1) 放到工作区插件目录
+# 1) 克隆到 .dsh 下的常驻插件目录（不要放 workspaces/incoming，那是临时区）
 git clone https://github.com/adeahejshshsh/dsh-composer-glass.git \
-  ~/.dsh/workspaces/incoming/dsh-composer-glass
+  ~/.dsh/plugins/dsh-composer-glass
 
-# 2) 软链到 profile 的 node_modules
+# 2) 软链到 profile 的 node_modules（用绝对路径，避免相对层级算错）
 PROFILE=~/.dsh/profiles/web
-ln -sfn ../../../workspaces/incoming/dsh-composer-glass \
+ln -sfn "$HOME/.dsh/plugins/dsh-composer-glass" \
   "$PROFILE/node_modules/dsh-composer-glass"
 
 # 3) 登记依赖与 bundle（编辑 $PROFILE/package.json）
-#    dependencies 增加： "dsh-composer-glass": "link:<绝对路径>"
+#    dependencies 增加： "dsh-composer-glass": "link:<克隆后的绝对路径>"
 #    dsh.profile.bundles 数组追加： "dsh-composer-glass"
 ```
 
