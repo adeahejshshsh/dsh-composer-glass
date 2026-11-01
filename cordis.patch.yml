@@ -1,0 +1,7 @@
+# dsh-composer-glass bundle patch
+#
+# 外置插件：底栏改造（细长药丸 + 权限/模型灰字行 + 附件与多行态 + 渐变放大）。
+# 只有客户端半边，无宿主逻辑。
+- insert:
+    - id: dsh-composer-glass
+      name: 'dsh-composer-glass'
