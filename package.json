@@ -1,7 +1,7 @@
 {
   "name": "dsh-composer-glass",
   "description": "底栏改造：输入框落在 +/- 发送之间，权限与模型移到上方灰字行，附件与多行态切圆角矩形，输入区渐变放大。",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "main": "./lib/index.js",
   "exports": {
@@ -13,7 +13,7 @@
   "dsh": {
     "id": "dsh-composer-glass",
     "name": "底栏药丸",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "bundle": {
       "patch": "./cordis.patch.yml"
     },
