@@ -63,6 +63,9 @@
                这里恢复文字显示，并让触发器按内容宽度撑开。 */
             'html[data-dsh-mobile-form] [class*="endInfo"] button[aria-haspopup="dialog"]{width:auto!important;padding:0 6px!important}',
             'html[data-dsh-mobile-form] [class*="endInfo"] button[aria-haspopup="dialog"] [class*="_label"]{display:block!important}',
+            /* 交付物/编辑卡片里的文件图标：整块去掉（不区分文件类型；只作用于带预览按钮的行） */
+            'html[data-dsh-mobile-form] [class*="_cardPreview"] ~ [class*="_fileIcon"]{display:none!important}',
+            'html[data-dsh-mobile-form] [class*="_file"]:has(> button[class*="_cardPreview"]) > [class*="_fileIcon"]{display:none!important}',
             /* 灰字行：权限靠左、模型靠右 */
             'html[data-dsh-mobile-form] [' + META_ATTR + ']{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0;padding:0 6px;overflow:hidden;color:var(--dsw-alias-label-secondary);font-size:12px;line-height:20px;min-height:20px}',
             'html[data-dsh-mobile-form] [' + META_ATTR + '] > *{min-width:0;flex:0 1 auto}',
@@ -87,6 +90,8 @@
             /* 发送侧只留按钮；发送键 transform 归零 */
             'html[data-dsh-mobile-form] [' + EDITOR_ATTR + '] ~ *{gap:0!important;flex:0 0 auto!important;width:auto!important;padding:0!important}',
             'html[data-dsh-mobile-form] [data-composer-card] button[aria-label*="发送"],html[data-dsh-mobile-form] [data-composer-card] button[aria-label*="send"],html[data-dsh-mobile-form] [data-composer-card] button[aria-label*="停止"],html[data-dsh-mobile-form] [data-composer-card] button[aria-label*="stop"]{width:30px;height:30px;min-width:30px;min-height:30px;margin:0!important;padding:0!important;align-self:center!important;transform:none!important}',
+            /* 运行中互斥：同一侧出现「停止」时隐藏「发送」，避免两个键并排（子代理页面出现过） */
+            'html[data-dsh-mobile-form] [data-composer-card] :has(> button[aria-label*=\"停止\"]) > button[aria-label*=\"发送\"],html[data-dsh-mobile-form] [data-composer-card] :has(> button[aria-label*=\"stop\"]) > button[aria-label*=\"send\"]{display:none!important}',
             /* 输入区座位：放大原渐变（盒子上扩 44px，内容不动） */
             'html[data-dsh-mobile-form] [data-composer-seat]{margin-top:-40px;padding-top:40px;background-image:linear-gradient(transparent 0px,var(--dsw-alias-bg-layer-1) 84px)}',
           ].join('')
@@ -135,8 +140,16 @@
           // 只认首屏那一行的两个控件：工作区触发器（aria-label 固定）+ 它同一行的按钮。
           // 早先按「卡片上方 80px 内的按钮」判定，会把消息底部「用量 X tok」按钮一起卷进来
           // （它也在卡片上方），于是被当成首屏控件隐藏掉。
-          var ws = document.querySelector("button[aria-label*='选择工作区'], button[aria-label*='workspace']")
+          // 只在本输入区所在的布局区域内找，并要求按钮可见：
+          // 子代理页面会保留父会话的输入区（隐藏但仍在 DOM），全文档搜索会把这里误判成首屏，
+          // 把首屏的 flex:1 规则套到子代理输入区上，键盘弹出时输入区就被顶到屏幕顶部。
+          var seat = card.closest('[data-composer-seat]')
+          var region = seat === null ? null : seat.parentElement
+          if (region === null) return []
+          var ws = region.querySelector("button[aria-label*='选择工作区'], button[aria-label*='workspace']")
           if (ws === null) return []
+          var wsRect = ws.getBoundingClientRect()
+          if (wsRect.width === 0 || wsRect.height === 0) return []
           var row = ws.parentElement
           if (row === null) return [ws]
           var buttons = row.querySelectorAll('button')
